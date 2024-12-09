@@ -36,7 +36,7 @@ lda_model = LdaModel.load("lda_model.gensim")
 dictionary = Dictionary.load('lda_model.gensim.id2word')
 
 # LOAD podcast database
-all_podcasts = pd.read_csv("shiny_database.csv")
+all_podcasts = pd.read_csv("shiny_database.gz")
 
 
 TOPIC_NAMES = {
