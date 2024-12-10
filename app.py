@@ -524,7 +524,7 @@ def server(input, output, session):
             return ui.tags.pre(message, style="color: #179B44;")
     
     @output
-    @render.ui
+    @render.text
     @reactive.event(input.render_scatter_plot)
     def plot_scatter():
 
