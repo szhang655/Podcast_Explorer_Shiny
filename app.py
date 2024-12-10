@@ -551,10 +551,10 @@ def server(input, output, session):
             
             topic_distribution = [(topic, topic_dict[topic]) for topic in sorted(topic_dict.keys())]
             new_podcast_vector = np.array([prob for _, prob in topic_distribution])
-
+            print("-------------before get nearest")
             # Nearest Podcast
             nearest_podcast_tuples = plot_get_nearest_podcasts(new_podcast_vector)
-            
+            print("-------------after get nearest")
             nearest_indices = [item[0] for item in nearest_podcast_tuples]
             nearest_distances = [item[1] for item in nearest_podcast_tuples]
             nearest_podcasts = all_podcasts.iloc[nearest_indices].copy()
@@ -569,6 +569,8 @@ def server(input, output, session):
             nearest_podcasts['x'] = x_values
             nearest_podcasts['y'] = y_values
 
+            
+            print("---------------------find rank")
             #  Color density to reflect nearest rank
             max_rank = max(nearest_podcasts['rank'])
             colors = ['rgba(30, 144, 255, {:.2f})'.format(0.3 + 0.7 * (max_rank - rank) / max_rank) 
@@ -579,7 +581,7 @@ def server(input, output, session):
             input_y = new_podcast_vector[topic_y_index]
 
             fig = go.Figure()
-
+            print("-------------plot")
             fig.add_trace(go.Scatter(
                 x=nearest_podcasts['x'],
                 y=nearest_podcasts['y'],
@@ -614,7 +616,7 @@ def server(input, output, session):
                 template="plotly_dark",
                 showlegend=False
             )
-
+            print("-------------render")
             # HTML Render
             return ui.HTML(pio.to_html(fig, full_html=False))
 
