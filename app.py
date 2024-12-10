@@ -24,7 +24,6 @@ import plotly.graph_objs as go
 import nltk
 
 
-
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
 spotify_black = "#191414"
@@ -174,7 +173,7 @@ def get_nearest_podcasts(new_podcast):
 
     similarities = cosine_similarity(new_podcast.reshape(1, -1), all_podcasts[['Topic0', 'Topic1', 'Topic2', 'Topic3', 'Topic4','Topic5','Topic6', 'Topic7']].values.astype('float32'))
     
-    sorted_indices = similarities[0].argsort()[::-1][1:21]  # Skip the first as it's the self-similarity
+    sorted_indices = similarities[0].argsort()[::-1][1:3]  # Skip the first as it's the self-similarity
     
     return sorted_indices
 
@@ -189,7 +188,7 @@ def plot_get_nearest_podcasts(new_podcast, num_podcasts=20):
         all_podcast_vectors = all_podcasts[['Topic0', 'Topic1', 'Topic2', 'Topic3', 'Topic4', 'Topic5', 'Topic6', 'Topic7']].values.astype('float32')
         similarities = cosine_similarity(new_podcast_reshaped, all_podcast_vectors)[0]  
         sorted_indices = similarities.argsort()[::-1]  # Sort from highest to lowest
-        top_indices = sorted_indices[1:num_podcasts + 1]  # Index from 1
+        top_indices = sorted_indices[1:num_podcasts+1]  # Index from 1
         nearest_podcasts = [(index, similarities[index]) for index in top_indices]
         return nearest_podcasts  
     except Exception as e:
@@ -509,7 +508,7 @@ def server(input, output, session):
                 ),
                 
                 # Nearest podcasts
-                ui.tags.h5("Nearest Podcasts:"),
+                ui.tags.h5("Two Nearest Podcasts:"),
                 ui.tags.pre(nearest_output, style="color: #179B44;"),
                 style="background-color: #191414; color: #179B44;"
             )
@@ -524,7 +523,7 @@ def server(input, output, session):
             return ui.tags.pre(message, style="color: #179B44;")
     
     @output
-    @render.text
+    @render.ui
     @reactive.event(input.render_scatter_plot)
     def plot_scatter():
 
@@ -551,7 +550,7 @@ def server(input, output, session):
             
             topic_distribution = [(topic, topic_dict[topic]) for topic in sorted(topic_dict.keys())]
             new_podcast_vector = np.array([prob for _, prob in topic_distribution])
-           
+
             # Nearest Podcast
             nearest_podcast_tuples = plot_get_nearest_podcasts(new_podcast_vector)
             
@@ -569,8 +568,6 @@ def server(input, output, session):
             nearest_podcasts['x'] = x_values
             nearest_podcasts['y'] = y_values
 
-            
-            
             #  Color density to reflect nearest rank
             max_rank = max(nearest_podcasts['rank'])
             colors = ['rgba(30, 144, 255, {:.2f})'.format(0.3 + 0.7 * (max_rank - rank) / max_rank) 
@@ -581,7 +578,7 @@ def server(input, output, session):
             input_y = new_podcast_vector[topic_y_index]
 
             fig = go.Figure()
-            
+
             fig.add_trace(go.Scatter(
                 x=nearest_podcasts['x'],
                 y=nearest_podcasts['y'],
@@ -610,13 +607,13 @@ def server(input, output, session):
             ))
 
             fig.update_layout(
-                title=f"Scatter plot of Topic {topic_x_index} vs Topic {topic_y_index}",
+                title=f"Scatter plot of Topic {topic_x_index} vs Topic {topic_y_index} With 20 Nearest Podcasts",
                 xaxis_title=f"Topic {topic_x_index}",
                 yaxis_title=f"Topic {topic_y_index}",
                 template="plotly_dark",
                 showlegend=False
             )
-            
+
             # HTML Render
             return ui.HTML(pio.to_html(fig, full_html=False))
 
