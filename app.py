@@ -23,6 +23,9 @@ import plotly.io as pio
 import plotly.graph_objs as go
 import nltk
 
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
