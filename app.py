@@ -23,12 +23,8 @@ import plotly.io as pio
 import plotly.graph_objs as go
 import nltk
 
-# Download punkt if it's not already downloaded
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
+nltk.download('punkt')
+nltk.download('punkt_tab')
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
