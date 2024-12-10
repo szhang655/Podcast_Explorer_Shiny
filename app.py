@@ -23,9 +23,7 @@ import plotly.io as pio
 import plotly.graph_objs as go
 import nltk
 
-nltk.download('punkt')
-nltk.download('punkt_tab')
-nltk.download('stopwords')
+
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
@@ -306,7 +304,6 @@ app_ui = ui.page_fluid(
             ui.navset_card_tab(
                 ui.nav_panel("LDA Topic Visualization", 
                     # ui.h1("Data Visualization Content", style=f"color: {spotify_green}; text-align: center;"),
-                    ui.tags.p("This tab contains visualizations unrelated to user input.", style="color: white;"),
                     ui.output_ui("render_lda_viz")  # Render the LDA visualization here
                 ),
                 ui.nav_panel("Search Results",
@@ -488,6 +485,8 @@ def server(input, output, session):
             # Generate HTML output with side-by-side layout
             html_output = ui.tags.div(
                 # Header with podcast image and audio preview
+                # Header with podcast name, image and audio preview
+                ui.tags.h3(f"Podcast Found: {result['name']}", style="color: #179B44; text-align: center; margin-bottom: 20px;"),  # Add podcast name here
                 ui.tags.div(
                     ui.tags.img(src=result['cover_image'], style="display: block; margin: 0 auto; width: 100%; max-width: 300px; height: auto;"),
                     style="text-align: center; margin-bottom: 20px;"
