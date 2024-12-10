@@ -25,6 +25,7 @@ import nltk
 
 nltk.download('punkt')
 nltk.download('punkt_tab')
+nltk.download('stopwords')
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
