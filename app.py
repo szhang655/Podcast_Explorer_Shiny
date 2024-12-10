@@ -28,6 +28,7 @@ try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     nltk.download('punkt')
+    nltk.download('punkt_tab')
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
