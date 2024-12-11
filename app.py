@@ -23,9 +23,11 @@ import plotly.io as pio
 import plotly.graph_objs as go
 import nltk
 
+
 nltk.download('punkt')
 nltk.download('punkt_tab')
 nltk.download('stopwords')
+
 
 # Spotify BLACK & GREEN
 spotify_green = "#179B44"
@@ -304,10 +306,7 @@ app_ui = ui.page_fluid(
         
         ui.card(
             ui.navset_card_tab(
-                ui.nav_panel("LDA Topic Visualization", 
-                    # ui.h1("Data Visualization Content", style=f"color: {spotify_green}; text-align: center;"),
-                    ui.output_ui("render_lda_viz")  # Render the LDA visualization here
-                ),
+                
                 ui.nav_panel("Search Results",
                     ui.tags.div(  
                         ui.tags.p("Podcast Analysis: ", style="color: #179B44;"),
@@ -340,7 +339,11 @@ app_ui = ui.page_fluid(
                     
                     ui.input_action_button("render_scatter_plot", "Plot", class_="btn btn-spotify"),
                     ui.output_ui("plot_scatter"),
-                )
+                ),
+                ui.nav_panel("LDA Topic Visualization", 
+                    # ui.h1("Data Visualization Content", style=f"color: {spotify_green}; text-align: center;"),
+                    ui.output_ui("render_lda_viz")  # Render the LDA visualization here
+                ),
             ),
             class_="spotify-card"
         )
@@ -474,11 +477,10 @@ def server(input, output, session):
             nearest_podcasts = all_podcasts.iloc[nearest_indices]
 
             # Prepare the output for the nearest podcasts
-            nearest_output = "The two closest podcasts to the new podcast are:\n\n"
-
+            nearest_output = "The two closest podcasts to the new podcast are:\n"
             
             for idx, podcast in nearest_podcasts.iterrows():
-                nearest_output += f"        Name: {podcast['name']}.\n"
+                nearest_output += f"       Name: {podcast['name']}.\n"
 
 
             # Radar Plot
@@ -489,6 +491,8 @@ def server(input, output, session):
                 # Header with podcast image and audio preview
                 # Header with podcast name, image and audio preview
                 ui.tags.h3(f"Podcast Found: {result['name']}", style="color: #179B44; text-align: center; margin-bottom: 20px;"),  # Add podcast name here
+                # Description Section
+                # ui.tags.p(f"Description: {result['description']}", style="color: #ffffff; text-align: left; margin-bottom: 20px;"),  # Podcast Description
                 ui.tags.div(
                     ui.tags.img(src=result['cover_image'], style="display: block; margin: 0 auto; width: 100%; max-width: 300px; height: auto;"),
                     style="text-align: center; margin-bottom: 20px;"
